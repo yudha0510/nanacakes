@@ -11,20 +11,18 @@
         *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
         :root {
-            --cocoa:        #2c1608;
-            --cocoa-mid:    #5c2d0e;
-            --caramel:      #b5601a;
-            --caramel-lt:   #d4894a;
-            --cream:        #fdf6ee;
-            --cream-dark:   #f0e4d0;
-            --sand:         #e8d5b7;
-            --topbar-h:     64px;
+            --cocoa:      #2c1608;
+            --caramel:    #b5601a;
+            --caramel-lt: #d4894a;
+            --cream:      #fdf6ee;
+            --cream-dark: #f0e4d0;
+            --sand:       #e8d5b7;
+            --topbar-h:   64px;
             --text-primary: #1e0e05;
             --text-muted:   #8a6040;
-            --text-faint:   #b89070;
-            --radius-sm:    6px;
-            --radius-md:    10px;
-            --radius-lg:    14px;
+            --radius-sm:  6px;
+            --radius-md:  10px;
+            --radius-lg:  14px;
         }
 
         body {
@@ -52,7 +50,6 @@
             box-shadow: 0 2px 16px rgba(44,22,8,.22);
         }
 
-        /* Brand */
         .navbar-brand {
             display: flex;
             align-items: center;
@@ -96,16 +93,7 @@
             margin-top: 2px;
         }
 
-        .main-content {
-            flex: 1;
-            padding: 0 px;   /* ← tambahin ini */
-        }
-
-        @media (max-width: 860px) {
-            .main-content { padding: 0 20px; }
-        }
-
-        /* Nav links */
+        /* ─── NAV LINKS ───────────────────────────── */
         .nav-links {
             display: flex;
             align-items: center;
@@ -149,7 +137,7 @@
 
         .nav-link.active svg { opacity: 1; }
 
-        /* Right side */
+        /* ─── NAVBAR RIGHT ────────────────────────── */
         .navbar-right {
             display: flex;
             align-items: center;
@@ -217,9 +205,7 @@
             transition: background .15s;
         }
 
-        .user-pill:hover {
-            background: rgba(255,220,150,.1);
-        }
+        .user-pill:hover { background: rgba(255,220,150,.1); }
 
         .user-avatar-sm {
             width: 28px; height: 28px;
@@ -231,6 +217,13 @@
             color: #fff8ee;
             flex-shrink: 0;
             letter-spacing: .5px;
+        }
+
+        .user-avatar-sm-img {
+            width: 36px; height: 36px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid rgba(196,122,58,0.3);
         }
 
         .user-pill-name {
@@ -297,7 +290,7 @@
         .dropdown-item.danger { color: #c62828; }
         .dropdown-item.danger:hover { background: #fff0f0; color: #b71c1c; }
 
-        /* Mobile toggle */
+        /* ─── MOBILE TOGGLE ───────────────────────── */
         .menu-toggle {
             display: none;
             width: 34px; height: 34px;
@@ -379,14 +372,6 @@
             gap: 10px;
         }
 
-        .user-avatar-sm-img{
-            width:36px;
-            height:36px;
-            border-radius:50%;
-            object-fit:cover;
-            border:2px solid rgba(196,122,58,0.3);
-        }
-
         .flash.success { background: #e8f5e9; color: #2e7d32; border: 1px solid #a5d6a7; }
         .flash.error   { background: #fce4ec; color: #c62828; border: 1px solid #f48fb1; }
         .flash.info    { background: #e3f0fb; color: #1565c0; border: 1px solid #90caf9; }
@@ -413,7 +398,6 @@
     <!-- NAVBAR -->
     <nav class="navbar">
 
-        <!-- Mobile toggle -->
         <button class="menu-toggle" onclick="toggleMobileNav()" type="button" aria-label="Toggle menu">
             <svg viewBox="0 0 24 24">
                 <line x1="3" y1="6" x2="21" y2="6"/>
@@ -422,7 +406,6 @@
             </svg>
         </button>
 
-        <!-- Brand -->
         <a href="{{ route('dashboard') }}" class="navbar-brand">
             <div class="logo-icon">
                 <svg viewBox="0 0 24 24">
@@ -437,7 +420,6 @@
             </div>
         </a>
 
-        <!-- Desktop links -->
         <div class="nav-links">
             <a href="{{ route('dashboard') }}" class="nav-link {{ request()->routeIs('dashboard') ? 'active' : '' }}">
                 <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
@@ -457,10 +439,8 @@
             </a>
         </div>
 
-        <!-- Right -->
         <div class="navbar-right">
 
-            <!-- Keranjang -->
             <a href="{{ route('cart.index') }}" class="cart-btn">
                 <svg viewBox="0 0 24 24">
                     <circle cx="9" cy="21" r="1"/>
@@ -473,21 +453,16 @@
                 @endif
             </a>
 
-            <!-- User pill -->
             <div class="user-pill" tabindex="0">
-            @if(auth()->user()->profile_photo)
-
-                <img src="{{ asset('storage/' . auth()->user()->profile_photo) }}"
-                    alt="Profile"
-                    class="user-avatar-sm-img">
-
-            @else
-
-                <div class="user-avatar-sm">
-                    {{ strtoupper(substr(auth()->user()->name ?? 'U', 0, 1)) }}
-                </div>
-
-            @endif
+                @if(auth()->user()->profile_photo)
+                    <img src="{{ asset('storage/' . auth()->user()->profile_photo) }}"
+                        alt="Profile"
+                        class="user-avatar-sm-img">
+                @else
+                    <div class="user-avatar-sm">
+                        {{ strtoupper(substr(auth()->user()->name ?? 'U', 0, 1)) }}
+                    </div>
+                @endif
                 <span class="user-pill-name">{{ auth()->user()->name ?? 'User' }}</span>
 
                 <div class="user-dropdown">
@@ -554,7 +529,6 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script>
-        // Flash auto-hide
         setTimeout(() => {
             document.querySelectorAll('.flash').forEach(el => {
                 el.style.transition = 'opacity 0.5s';
@@ -563,12 +537,10 @@
             });
         }, 4000);
 
-        // Mobile nav
         function toggleMobileNav() {
             document.getElementById('mobileNav').classList.toggle('open');
         }
 
-        // Close mobile nav on outside click
         document.addEventListener('click', function(e) {
             const nav = document.getElementById('mobileNav');
             const toggle = document.querySelector('.menu-toggle');

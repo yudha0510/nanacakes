@@ -2,30 +2,36 @@
 
 @section('title', 'Profil Saya')
 
-@section('content')
-
+@push('styles')
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Playfair+Display:wght@700&display=swap');
+    body { background: #1a0a02 !important; }
+    .main-content { background: #1a0a02; }
+</style>
+@endpush
 
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+@section('content')
+<style>
+*, *::before, *::after { box-sizing: border-box; }
 
 .pf-page {
-    font-family: 'Plus Jakarta Sans', sans-serif;
-    padding: 24px 28px 60px;
-    color: #1a0a02;
+    padding: 32px 20px 60px;
+    max-width: 860px;
+    margin: auto;
 }
 
+/* ── CARD ── */
 .pf-card {
-    background: #fff;
-    border: 0.5px solid rgba(196,122,58,0.18);
-    border-radius: 14px;
+    background: rgba(255,248,238,0.03);
+    border: 0.5px solid rgba(196,122,58,0.22);
+    border-radius: 16px;
     overflow: hidden;
     display: grid;
-    grid-template-columns: 260px 1fr;
+    grid-template-columns: 240px 1fr;
 }
 
+/* ── LEFT PANEL ── */
 .pf-left {
-    background: #fdf0e4;
+    background: rgba(44,18,6,0.5);
     border-right: 0.5px solid rgba(196,122,58,0.15);
     display: flex;
     flex-direction: column;
@@ -36,37 +42,36 @@
 
 .pf-avatar-wrap {
     position: relative;
-    width: 96px;
-    height: 96px;
+    width: 88px;
+    height: 88px;
     margin-bottom: 4px;
 }
 
 .pf-avatar,
 .pf-avatar-placeholder {
-    width: 96px;
-    height: 96px;
+    width: 88px;
+    height: 88px;
     border-radius: 50%;
-    border: 3px solid #c47a3a;
+    border: 2.5px solid #c47a3a;
 }
 
 .pf-avatar { object-fit: cover; display: block; }
 
 .pf-avatar-placeholder {
-    background: #c47a3a;
+    background: linear-gradient(135deg, #b5601a, #d4894a);
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 36px;
+    font-size: 32px;
     font-weight: 700;
-    color: #fff;
-    border-color: #b36a2e;
+    color: #fff8ee;
 }
 
 .pf-avatar-overlay {
     position: absolute;
     inset: 0;
     border-radius: 50%;
-    background: rgba(44,18,6,0.45);
+    background: rgba(26,10,2,0.55);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -75,20 +80,30 @@
 }
 
 .pf-avatar-wrap:hover .pf-avatar-overlay { opacity: 1; }
-.pf-avatar-overlay svg { stroke: #fff; }
+.pf-avatar-overlay svg { stroke: #fff8ee; }
+
+.pf-avatar-hint {
+    display: none;
+    font-size: 11px;
+    color: #c47a3a;
+    font-weight: 600;
+    margin-top: -4px;
+    text-align: center;
+}
 
 .pf-name {
-    font-family: 'Playfair Display', serif;
-    font-size: 16px;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 17px;
     font-weight: 700;
-    color: #2c1206;
+    color: #fff8ee;
     text-align: center;
 }
 
 .pf-email {
     font-size: 12px;
-    color: #9a775f;
+    color: rgba(245,222,179,0.45);
     text-align: center;
+    word-break: break-all;
 }
 
 .pf-divider {
@@ -110,37 +125,41 @@
     font-weight: 600;
     letter-spacing: 1.5px;
     text-transform: uppercase;
-    color: #9a775f;
+    color: rgba(196,122,58,0.7);
 }
 
 .pf-info-val {
     font-size: 13px;
     font-weight: 500;
-    color: #2c1206;
+    color: #fff8ee;
 }
 
+/* ── RIGHT PANEL ── */
 .pf-right { display: flex; flex-direction: column; }
 
 .pf-right-header {
-    padding: 20px 24px;
+    padding: 18px 22px;
     border-bottom: 0.5px solid rgba(196,122,58,0.15);
     display: flex;
     align-items: center;
     justify-content: space-between;
+    gap: 10px;
 }
 
 .pf-right-title {
     font-size: 13px;
     font-weight: 700;
-    color: #2c1206;
+    color: #fff8ee;
+    letter-spacing: 0.2px;
 }
 
-.pf-right-body { padding: 22px 24px; }
+.pf-right-body { padding: 22px; }
 
+/* ── VIEW FIELDS ── */
 .pf-fields {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 16px;
+    gap: 14px;
 }
 
 .pf-field label {
@@ -149,92 +168,21 @@
     font-weight: 600;
     letter-spacing: 1.5px;
     text-transform: uppercase;
-    color: #9a775f;
+    color: rgba(196,122,58,0.7);
     margin-bottom: 5px;
 }
 
 .pf-field p {
-    font-size: 14px;
+    font-size: 13px;
     font-weight: 500;
-    color: #2c1206;
-    padding: 10px 12px;
-    background: #fdf8f3;
+    color: #fff8ee;
+    padding: 9px 12px;
+    background: rgba(44,18,6,0.5);
     border: 0.5px solid rgba(196,122,58,0.15);
     border-radius: 9px;
 }
 
-.pf-form-group { margin-bottom: 14px; }
-
-.pf-form-group label {
-    display: block;
-    font-size: 10px;
-    font-weight: 600;
-    letter-spacing: 1.5px;
-    text-transform: uppercase;
-    color: #9a775f;
-    margin-bottom: 6px;
-}
-
-.pf-form-group input[type="text"],
-.pf-form-group input[type="email"] {
-    width: 100%;
-    padding: 10px 12px;
-    border: 0.5px solid rgba(196,122,58,0.22);
-    border-radius: 9px;
-    font-size: 13px;
-    font-family: 'Plus Jakarta Sans', sans-serif;
-    color: #2c1206;
-    background: #fdf8f3;
-    outline: none;
-    transition: border-color 0.2s;
-}
-
-.pf-form-group input:focus { border-color: #c47a3a; }
-.pf-form-group input[readonly] { opacity: 0.5; cursor: not-allowed; }
-
-.pf-form-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 14px;
-}
-
-.pf-btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    padding: 9px 18px;
-    border-radius: 9px;
-    font-size: 13px;
-    font-weight: 600;
-    font-family: 'Plus Jakarta Sans', sans-serif;
-    cursor: pointer;
-    border: none;
-    transition: opacity 0.15s, transform 0.1s;
-}
-
-.pf-btn:active { transform: scale(0.97); }
-.pf-btn-edit { background: #2c1206; color: #fff; }
-.pf-btn-edit:hover { opacity: 0.85; }
-.pf-btn-save { background: #c47a3a; color: #fff8ee; }
-.pf-btn-save:hover { opacity: 0.88; }
-.pf-btn-cancel {
-    background: transparent;
-    color: #9a775f;
-    border: 0.5px solid rgba(196,122,58,0.3) !important;
-}
-.pf-btn-cancel:hover { background: #fdf8f3; }
-.pf-actions { display: flex; gap: 8px; margin-top: 4px; }
-
-.pf-alert {
-    background: #eaf3de;
-    border: 0.5px solid #b7dfbf;
-    color: #3b6d11;
-    border-radius: 9px;
-    padding: 10px 14px;
-    font-size: 13px;
-    margin-bottom: 16px;
-}
-
+/* ── BADGE ── */
 .pf-badge {
     display: inline-flex;
     align-items: center;
@@ -245,33 +193,124 @@
     text-transform: uppercase;
     padding: 3px 8px;
     border-radius: 20px;
+    margin-top: 6px;
 }
 
 .pf-badge-verified {
-    background: #eaf3de;
-    color: #3b6d11;
-    border: 0.5px solid #b7dfbf;
+    background: rgba(46,125,50,0.15);
+    color: #6fcf7a;
+    border: 0.5px solid rgba(46,125,50,0.35);
 }
 
 .pf-badge-verified::before { content: '✓ '; }
 
 .pf-badge-unverified {
-    background: #fdecea;
-    color: #c0392b;
-    border: 0.5px solid #f5b7b1;
+    background: rgba(192,57,43,0.12);
+    color: #e07070;
+    border: 0.5px solid rgba(192,57,43,0.3);
 }
 
 .pf-badge-unverified::before { content: '✕ '; }
 
-@media (max-width: 768px) {
+/* ── EDIT FORM ── */
+.pf-form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+}
+
+.pf-form-group { display: flex; flex-direction: column; gap: 5px; }
+
+.pf-form-group label {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: rgba(196,122,58,0.7);
+}
+
+.pf-form-group input[type="text"],
+.pf-form-group input[type="email"] {
+    width: 100%;
+    padding: 9px 12px;
+    border: 0.5px solid rgba(196,122,58,0.22);
+    border-radius: 9px;
+    font-size: 13px;
+    font-family: 'DM Sans', sans-serif;
+    color: #fff8ee;
+    background: rgba(44,18,6,0.6);
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+.pf-form-group input:focus { border-color: #c47a3a; }
+.pf-form-group input[readonly] { opacity: 0.45; cursor: not-allowed; }
+
+/* ── BUTTONS ── */
+.pf-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 9px 18px;
+    border-radius: 9px;
+    font-size: 13px;
+    font-weight: 600;
+    font-family: 'DM Sans', sans-serif;
+    cursor: pointer;
+    border: none;
+    transition: opacity 0.15s, transform 0.1s;
+}
+
+.pf-btn:active { transform: scale(0.97); }
+
+.pf-btn-edit {
+    background: rgba(196,122,58,0.15);
+    color: #fff8ee;
+    border: 0.5px solid rgba(196,122,58,0.35) !important;
+}
+.pf-btn-edit:hover { background: rgba(196,122,58,0.25); }
+
+.pf-btn-save { background: #c47a3a; color: #fff8ee; }
+.pf-btn-save:hover { background: #e09040; }
+
+.pf-btn-cancel {
+    background: transparent;
+    color: rgba(245,222,179,0.55);
+    border: 0.5px solid rgba(196,122,58,0.25) !important;
+}
+.pf-btn-cancel:hover { background: rgba(196,122,58,0.08); }
+
+.pf-actions { display: flex; gap: 8px; margin-top: 16px; }
+
+/* ── ALERT ── */
+.pf-alert {
+    background: rgba(46,125,50,0.1);
+    border: 0.5px solid rgba(46,125,50,0.3);
+    color: #6fcf7a;
+    border-radius: 9px;
+    padding: 10px 14px;
+    font-size: 13px;
+    margin-bottom: 16px;
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 680px) {
+    .pf-page { padding: 20px 14px 48px; }
     .pf-card { grid-template-columns: 1fr; }
-    .pf-left { border-right: none; border-bottom: 0.5px solid rgba(196,122,58,0.15); }
-    .pf-fields, .pf-form-grid { grid-template-columns: 1fr; }
+    .pf-left {
+        border-right: none;
+        border-bottom: 0.5px solid rgba(196,122,58,0.15);
+        padding: 24px 20px;
+    }
+    .pf-fields,
+    .pf-form-grid { grid-template-columns: 1fr; }
+    .pf-right-header { flex-direction: column; align-items: flex-start; }
+    .pf-actions { flex-direction: column; }
+    .pf-btn { width: 100%; justify-content: center; }
 }
 </style>
 
 <div class="pf-page">
-
     <div class="pf-card">
 
         {{-- ── KIRI ── --}}
@@ -295,9 +334,7 @@
                 </div>
             </div>
 
-            <p id="avatarHint" style="display:none;font-size:11px;color:#c47a3a;font-weight:600;margin-top:-4px;text-align:center;">
-                ✏️ Klik foto untuk ubah
-            </p>
+            <p class="pf-avatar-hint" id="avatarHint">✏️ Klik foto untuk ubah</p>
 
             <div class="pf-name">{{ auth()->user()->name }}</div>
             <div class="pf-email">{{ auth()->user()->email }}</div>
@@ -359,7 +396,7 @@
                     <span class="pf-right-title">Edit Profil</span>
                 </div>
                 <div class="pf-right-body">
-                    {{-- Form verifikasi diletakkan di luar form utama --}}
+
                     @if(!Auth::user()->email_verified_at)
                         <form id="verificationForm" method="POST" action="{{ route('verification.send') }}">
                             @csrf
@@ -383,10 +420,10 @@
                                 @if(Auth::user()->email_verified_at)
                                     <span class="pf-badge pf-badge-verified" style="margin-top:6px;">Verified</span>
                                 @else
-                                    <span class="pf-badge pf-badge-unverified" style="margin-top:6px;">Unverified</span>
+                                    <span class="pf-badge pf-badge-unverified" style="margin-top:4px;">Unverified</span>
                                     <button type="submit" form="verificationForm"
                                             class="pf-btn pf-btn-save" style="font-size:11px;padding:6px 12px;margin-top:6px;">
-                                        Kirim Verifikasi Email
+                                        Kirim Verifikasi
                                     </button>
                                 @endif
                             </div>
@@ -397,7 +434,7 @@
                         </div>
 
                         <div class="pf-actions">
-                            <button type="submit" form="profileForm" class="pf-btn pf-btn-save">
+                            <button type="submit" class="pf-btn pf-btn-save">
                                 <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
                                 Simpan Perubahan
                             </button>
@@ -418,9 +455,7 @@
 let isEditMode = false;
 
 function avatarClick() {
-    if (isEditMode) {
-        document.getElementById('avatarInput').click();
-    }
+    if (isEditMode) document.getElementById('avatarInput').click();
 }
 
 function showEditForm() {

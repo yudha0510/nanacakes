@@ -444,10 +444,19 @@
 .pmy-notice svg       { flex-shrink: 0; margin-top: 1px; }
 .pmy-notice-title     { font-weight: 700; margin-bottom: 3px; font-size: 13px; }
 .pmy-notice-desc      { font-size: 12px; opacity: 0.8; line-height: 1.55; }
-.pmy-notice-warning   { background: rgba(196,122,58,0.1);  border-color: rgba(196,122,58,0.3); color: #e09040; }
 .pmy-notice-danger    { background: rgba(239,68,68,0.08);  border-color: rgba(239,68,68,0.25); color: #f87171; }
 .pmy-notice-success   { background: rgba(34,197,94,0.08);  border-color: rgba(34,197,94,0.2);  color: #4ade80; }
 .pmy-notice-info      { background: rgba(59,130,246,0.08); border-color: rgba(59,130,246,0.2); color: #60a5fa; }
+
+.pmy-notice-link {
+    color: #60a5fa;
+    font-weight: 600;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    margin-top: 6px;
+}
 
 /* ── COUNTDOWN ── */
 .pmy-countdown-wrap {
@@ -685,17 +694,71 @@
 }
 
 /* ── RESPONSIVE ── */
-@media (max-width: 768px) {
-    .pmy-page    { padding: 20px 16px 48px; }
-    .pmy-steps   { grid-template-columns: repeat(2, 1fr); }
+
+/* Tablet */
+@media (max-width: 900px) {
+    .pmy-page  { padding: 24px 20px 48px; }
+    .pmy-steps { grid-template-columns: repeat(2, 1fr); gap: 14px; }
     .pmy-step:nth-child(2)::after { display: none; }
+    .pmy-step:nth-child(odd)::after { display: none; }
 }
 
-@media (max-width: 480px) {
-    .pmy-steps  { grid-template-columns: 1fr; }
+/* Large mobile */
+@media (max-width: 640px) {
+    .pmy-page    { padding: 18px 14px 44px; }
+    .pmy-guide   { padding: 16px 18px; }
+    .pmy-steps   { grid-template-columns: 1fr; gap: 12px; }
     .pmy-step::after { display: none; }
+
+    .pmy-card-header { flex-wrap: wrap; gap: 10px; }
+    .pmy-thumb { width: 48px; height: 48px; }
+
+    .pmy-countdown-wrap { flex-direction: column; align-items: flex-start; gap: 12px; }
+    .pmy-countdown-icon { align-self: flex-end; }
+    .pmy-countdown-timer { font-size: 24px; }
+
+    .pmy-bank-acct { font-size: 13px; letter-spacing: 1px; }
+    .pmy-bank-row { flex-wrap: wrap; gap: 6px; }
+}
+
+/* Small mobile */
+@media (max-width: 480px) {
+    .pmy-header h1 { font-size: 1.5rem; }
+    .pmy-header p  { font-size: 12px; }
+    .pmy-tabs      { gap: 6px; }
+    .pmy-tab       { padding: 7px 14px; font-size: 12px; }
+
+    .pmy-card-header { padding: 14px 16px; }
     .pmy-thumb  { width: 44px; height: 44px; }
     .pmy-badge  { font-size: 10.5px; padding: 4px 10px; }
+    .pmy-product-name { font-size: 13px; }
+
+    .pmy-items, .pmy-payment { padding: 14px 16px; }
+    .pmy-toggle { padding: 10px 16px; font-size: 11.5px; }
+
+    .pmy-bank-card { padding: 14px; }
+    .pmy-total-val { font-size: 15px; }
+
+    .pmy-tl-label { font-size: 9px; }
+    .pmy-tl-dot   { width: 22px; height: 22px; }
+
+    .pmy-upload-area { padding: 18px 12px; }
+    .pmy-upload-text { font-size: 12px; }
+}
+
+/* Extra small mobile */
+@media (max-width: 360px) {
+    .pmy-page { padding: 14px 10px 40px; }
+    .pmy-header-eyebrow { letter-spacing: 2px; }
+    .pmy-tab span, .pmy-tab { font-size: 11.5px; }
+    .pmy-countdown-timer { font-size: 20px; letter-spacing: 1px; }
+}
+
+/* Large desktop */
+@media (min-width: 1440px) {
+    .pmy-page { padding: 36px 64px 72px; }
+    .pmy-list { max-width: 900px; margin: 0 auto; }
+    .pmy-guide, .pmy-header { max-width: 900px; margin-left: auto; margin-right: auto; }
 }
 </style>
 
@@ -824,8 +887,8 @@
                 {{-- CARD BODY --}}
                 <div class="pmy-body">
 
-                    {{-- STATUS TIMELINE --}}
-                    @if (!in_array($order->status, ['rejected', 'cancelled']))
+                    {{-- STATUS TIMELINE (hanya untuk processing) --}}
+                    @if ($order->status === 'processing')
                         <div style="padding: 16px 22px 0;">
                             <div class="pmy-timeline">
                                 @foreach ($statusSteps as $i => $step)
@@ -923,7 +986,15 @@
                                 <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
                                 <div>
                                     <div class="pmy-notice-title">Cara Upload Bukti</div>
-                                    <div class="pmy-notice-desc">Ambil screenshot atau foto struk transfer, lalu upload di bawah. Pastikan nominal dan nama tujuan terlihat jelas.</div>
+                                    <div class="pmy-notice-desc">
+                                        Ambil screenshot atau foto struk transfer, lalu upload di bawah. Pastikan nominal dan nama tujuan terlihat jelas.
+                                        <br>
+                                        Hubungi admin jika status tidak berubah lebih dari 1×24 jam.
+                                        <a href="{{ route('help') }}" class="pmy-notice-link">
+                                            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                                            Buka FAQ untuk nomor admin
+                                        </a>
+                                    </div>
                                 </div>
                             </div>
 
@@ -952,7 +1023,15 @@
                                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
                                 <div>
                                     <div class="pmy-notice-title">Sedang Diverifikasi Admin</div>
-                                    <div class="pmy-notice-desc">Bukti pembayaran sudah diterima dan sedang ditinjau. Proses verifikasi membutuhkan waktu hingga 1×24 jam.</div>
+                                    <div class="pmy-notice-desc">
+                                        Bukti pembayaran sudah diterima dan sedang ditinjau. Proses verifikasi membutuhkan waktu hingga 1×24 jam.
+                                        <br>
+                                        Hubungi admin jika status tidak berubah lebih dari 1×24 jam.
+                                        <a href="{{ route('help') }}" class="pmy-notice-link">
+                                            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                                            Buka FAQ untuk nomor admin
+                                        </a>
+                                    </div>
                                 </div>
                             </div>
 
@@ -1041,22 +1120,6 @@
 
         @endforelse
 
-    </div>
-
-    {{-- INFO BANTUAN --}}
-    <div class="pmy-notice pmy-notice-info" style="margin-top:24px;">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-        <div>
-            <div class="pmy-notice-title">Perlu Bantuan?</div>
-            <div class="pmy-notice-desc">
-                Hubungi admin jika status tidak berubah lebih dari 1×24 jam.
-                <a href="{{ route('help') }}"
-                   style="color:#60a5fa;font-weight:600;text-decoration:none;display:inline-flex;align-items:center;gap:4px;margin-top:6px;">
-                    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-                    Buka FAQ untuk nomor admin
-                </a>
-            </div>
-        </div>
     </div>
 
 </div>
